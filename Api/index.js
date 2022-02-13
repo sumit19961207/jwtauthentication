@@ -50,7 +50,6 @@ app.post("/api/refresh", (req,res)=>{
         res.status(200).json({
             acessToken : newAcessToken,
             refreshToken : newRefreshToken,
-            Hello: "Sumit"
         })
     })
 
@@ -111,7 +110,14 @@ app.delete("/api/users/:userId", verify, (req,res)=>{
     }else{
         res.status(403).json("You are not allowed to deleted");
     }
-})
+});
+
+
+app.post("/api/logout",verify, (req,res)=>{
+    const refreshToken = req.body.token;
+    refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+    res.status(200).json("You logged out successfully.");
+});
 
 app.listen(5000, () => {
     console.log("Backend server is running");
