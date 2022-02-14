@@ -56,7 +56,7 @@ app.post("/api/refresh", (req,res)=>{
 });
 
 const generateAccessToken = (user) => {
-    return jwt.sign({id:user.id,isAdmin:user.isAdmin},"mySecretkey", {expiresIn: "1m"});
+    return jwt.sign({id:user.id,isAdmin:user.isAdmin},"mySecretkey", {expiresIn: "2m"});
 };
 
 const generateRefreshToken = (user) => {
@@ -92,7 +92,7 @@ const verify = (req,res,next) => {
     const authHeader = req.headers.authorization;
     if(authHeader){
         const token = authHeader.split(" ")[1];
-        jwt.verify(token,"mysecreactkey", (err,user)=>{
+        jwt.verify(token,"mySecretkey", (err,user)=>{
           if(err){
               res.status(403).json("Token is invalid");
           }
@@ -105,7 +105,7 @@ const verify = (req,res,next) => {
 };
 
 app.delete("/api/users/:userId", verify, (req,res)=>{
-    if(req.user.id=== req.params.userId || req.user.isAdmin){
+    if(req.user.id === req.params.userId || req.user.isAdmin){
         res.status(200).json("User has been deleted");
     }else{
         res.status(403).json("You are not allowed to deleted");
